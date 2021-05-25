@@ -9,34 +9,43 @@ namespace dotnet_capstone_project
     class Program
     {
         static void Main(string[] args)
-        {//can't use ! in C# so set = null
-            if (args[0] == null)
-            {// use first Console.Writeline then use return in void
-                Console.WriteLine("Please input a make or type of a car.");
-                return;
-            }// ElementAtOrDefault accesses an element
-            // It handles an out-of-range access without throwing an exception 
-            var args2 = args.ElementAtOrDefault(1);
-            using (StreamReader r = new StreamReader("./cars.json"))
+        {
+            try
             {
-                var jsonString = r.ReadToEnd();
-                var carOfList = JsonSerializer.Deserialize<List<Car>>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                foreach (var i in carOfList)
+                //can't use ! in C# so set = null
+                if (args[0] == null)
+                {// use first Console.Writeline then use return in void
+                    Console.WriteLine("Please input a make or type of a car.");
+                    return;
+                }// ElementAtOrDefault accesses an element
+                 // It handles an out-of-range access without throwing an exception 
+                var args2 = args.ElementAtOrDefault(1);
+                using (StreamReader r = new StreamReader("./cars.json"))
                 {
-                    if (args[0].ToLower() == i.Make.ToLower() && args2 == null)
+                    var jsonString = r.ReadToEnd();
+                    var carOfList = JsonSerializer.Deserialize<List<Car>>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    foreach (var i in carOfList)
                     {
-                        Console.WriteLine(i.Model);
-                    }
-                    if (args[0].ToLower() == i.Type.ToLower())
-                    {
-                        Console.WriteLine(i.Model);
-                    }
-                    if (args[0].ToLower() == i.Make.ToLower() && args2 == i.Type.ToLower())
-                    {
-                        Console.WriteLine(i.Model);
+                        if (args[0].ToLower() == i.Make.ToLower() && args2 == null)
+                        {
+                            Console.WriteLine(i.Model);
+                        }
+                        if (args[0].ToLower() == i.Type.ToLower())
+                        {
+                            Console.WriteLine(i.Model);
+                        }
+                        if (args[0].ToLower() == i.Make.ToLower() && args2 == i.Type.ToLower())
+                        {
+                            Console.WriteLine(i.Model);
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
     }
 }
